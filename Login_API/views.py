@@ -29,7 +29,7 @@ def login_page(request):
             user = authenticate(username = username, password = password)
             if user is not None:
                 login(request, user)
-                return HttpResponseRedirect(reverse('Login_API:edit'))
+                return HttpResponseRedirect(reverse('Post_API:home'))
     return render(request, 'Login_API/login.html', context = {'title' : 'Login Page', 'form' : form})
 
 @login_required
@@ -37,3 +37,8 @@ def edit_profile(request):
     current_user = UserProfile.objects.get(user = request.user)
     form = EditProfileForm(instance = current_user)
     return render(request, 'Login_API/profile.html', context = {'title' : 'Edit Profile Page', 'form' : form})
+
+@login_required
+def log_out(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('Login_API:login'))
