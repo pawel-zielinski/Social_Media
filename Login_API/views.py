@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
-from .forms import CreateNewUser
+from .forms import CreateNewUser, FixedAuthenticationForm, EditProfileForm
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
 from .models import UserProfile
@@ -22,9 +22,9 @@ def sign_up(request):
 
 @login_required
 def login_page(request):
-    form = AuthenticationForm()
+    form = FixedAuthenticationForm()
     if request.method == 'POST':
-        form = AuthenticationForm(data = request.POST)
+        form = FixedAuthenticationForm(data = request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
@@ -33,3 +33,9 @@ def login_page(request):
                 login(request, user)
                 return HttpResponseRedirect(reverse(''))
     return render(request, 'Login_API/login.html', context = {'title' : 'Login Page', 'form' : form})
+
+@login_required
+def edit_profile(request):
+    current_user = UserProfile.objects.get(user = request.user)
+    form = EditProfileForm(instance = current_user)
+    return render(request, 'Login_API/profile.html', context = {'title' : 'Edit Profile Page', 'form' : form})
