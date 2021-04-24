@@ -36,6 +36,13 @@ def login_page(request):
 def edit_profile(request):
     current_user = UserProfile.objects.get(user = request.user)
     form = EditProfileForm(instance = current_user)
+
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, request.FILES, instance = current_user)
+        if form.is_valid():
+            form.save(commit = True)
+            form = EditProfileForm(instance = current_user)
+
     return render(request, 'Login_API/profile.html', context = {'title' : 'Edit Profile Page', 'form' : form})
 
 @login_required
