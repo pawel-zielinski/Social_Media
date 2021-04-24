@@ -3,5 +3,9 @@
 {% block title %} {{ title }} {% endblock %}
 
 {% block body_block %}
-
+<form method="post" enctype="multipart/form-data">
+  {{ form|crispy }}
+  {% csrf_token %}
+  <button type="submit" class="btn btn-primary">Update</button>
+</form>
 {% endblock %}

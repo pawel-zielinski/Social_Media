@@ -3,7 +3,6 @@ from .forms import CreateNewUser, FixedAuthenticationForm, EditProfileForm
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
 from .models import UserProfile
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
 
@@ -20,7 +19,6 @@ def sign_up(request):
             return HttpResponseRedirect(reverse('Login_API:login'))
     return render(request, 'Login_API/signup.html', context = {'title' : 'Sign up from here', 'form' : form})
 
-@login_required
 def login_page(request):
     form = FixedAuthenticationForm()
     if request.method == 'POST':
@@ -31,7 +29,7 @@ def login_page(request):
             user = authenticate(username = username, password = password)
             if user is not None:
                 login(request, user)
-                return HttpResponseRedirect(reverse(''))
+                return HttpResponseRedirect(reverse('Login_API:edit'))
     return render(request, 'Login_API/login.html', context = {'title' : 'Login Page', 'form' : form})
 
 @login_required
