@@ -11,3 +11,11 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.email
+
+
+class Follow(models.Model):
+    follower = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'follower')
+    following = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'following')
+
+    def __str__(self):
+        return '{} --follows--> {}'.format(self.follower, self.following)
