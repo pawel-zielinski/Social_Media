@@ -42,6 +42,7 @@ def edit_profile(request):
         if form.is_valid():
             form.save(commit = True)
             form = EditProfileForm(instance = current_user)
+            return HttpResponseRedirect(reverse('Login_API:profile'))
 
     return render(request, 'Login_API/profile.html', context = {'title' : 'Feetbook | Edit Profile', 'form' : form})
 
