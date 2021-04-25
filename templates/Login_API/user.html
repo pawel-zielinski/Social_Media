@@ -1,0 +1,23 @@
+{% extends 'navbar.html' %}
+{% load crispy_forms_tags %}
+{% block title %} {{ title }} {% endblock %}
+
+{% block css_block %}
+
+{% endblock %}
+
+{% block body_block %}
+<div class="row">
+  <div class="col-sm-4">
+    {% if user.user_profile.profile_pic %}
+    <img src="/media/{{ user.user_profile.profile_pic }}" width="220px" height="220px" class="rounded-circle">
+    {% else %}
+    <img src="/media/profile_pics/default.jpg" width="220px" height="220px" class="rounded-circle">
+    {% endif %}
+  </div>
+  <div class="col-sm-8">
+    <h1>{{ user.username }}</h1><hr>
+    <h4>Posts: {{ user.post_author.count }} &nbsp;&nbsp; Followers: {{ user.follower.count }} &nbsp;&nbsp; Following {{ user.following.count }}</h4>
+  </div>
+</div>
+{% endblock %}

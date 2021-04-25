@@ -17,7 +17,7 @@ def sign_up(request):
             user_profile = UserProfile(user = user)
             user_profile.save()
             return HttpResponseRedirect(reverse('Login_API:login'))
-    return render(request, 'Login_API/signup.html', context = {'title' : 'Sign up from here', 'form' : form})
+    return render(request, 'Login_API/signup.html', context = {'title' : 'Feetbook | Sign Up', 'form' : form})
 
 def login_page(request):
     form = FixedAuthenticationForm()
@@ -30,7 +30,7 @@ def login_page(request):
             if user is not None:
                 login(request, user)
                 return HttpResponseRedirect(reverse('Post_API:home'))
-    return render(request, 'Login_API/login.html', context = {'title' : 'Login Page', 'form' : form})
+    return render(request, 'Login_API/login.html', context = {'title' : 'Feetbook | Login', 'form' : form})
 
 @login_required
 def edit_profile(request):
@@ -43,9 +43,13 @@ def edit_profile(request):
             form.save(commit = True)
             form = EditProfileForm(instance = current_user)
 
-    return render(request, 'Login_API/profile.html', context = {'title' : 'Edit Profile Page', 'form' : form})
+    return render(request, 'Login_API/profile.html', context = {'title' : 'Feetbook | Edit Profile', 'form' : form})
 
 @login_required
 def log_out(request):
     logout(request)
     return HttpResponseRedirect(reverse('Login_API:login'))
+
+@login_required
+def profile(request):
+    return render(request, 'Login_API/user.html', context = {'title' : 'Feetbook | Profile'})
