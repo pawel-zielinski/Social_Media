@@ -3,7 +3,18 @@
 {% block title %} {{ title }} {% endblock %}
 
 {% block css_block %}
-
+<style >
+  .crop {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+  }
+  .crop img {
+    width: 400px;
+    height: 300px;
+    margin: -85px 0 0 -110px;
+  }
+</style>
 {% endblock %}
 
 {% block body_block %}
@@ -15,11 +26,52 @@
     <img src="/media/profile_pics/default.jpg" width="220px" height="220px" class="rounded-circle">
     {% endif %}
   </div>
+
   <div class="col-sm-8">
+    <button type="button" style="float:right" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+    Create Post
+    </button>
     <h1>{{ user.username }}</h1>
     <h4>{{ user.post_author.count }} Posts &nbsp;&nbsp; {{ user.follower.count }} Followers &nbsp;&nbsp; {{ user.following.count }} Following</h4><hr><br>
     <h3>{{ user.user_profile.full_name }}&nbsp;<a style="font-size:15px" href="{% url 'Login_API:edit' %}">[Edit Profile]</a></h3>
     <h6>{{ user.user_profile.description }}</h6>
   </div>
 </div>
+<!-- The Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">What's on Your mind?</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form method="post" enctype="multipart/form-data">
+          {{ form.as_p }}
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary btn-sm">Post</button>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<br><br>
+<hr>
+<div class="row">
+  {% for post in user.post_author.all %}
+  <div class="crop">
+    <img src="/media/{{ post.image }}" alt="">
+  </div>
+  {% endfor %}
+</div><hr>
 {% endblock %}

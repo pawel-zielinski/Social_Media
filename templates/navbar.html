@@ -34,6 +34,10 @@
           <a class="nav-link" href="{% url 'Login_API:profile' %}"> <img src="/media/profile_pics/default.jpg" width="30px" height="30px" class="rounded-circle"> </a>
           {% endif %}
         </li>
+        <form class="form-inline" method="GET">
+          <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
     </nav>
 
     <div class="container" style="padding-top:20px">
