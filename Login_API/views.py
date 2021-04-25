@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
 from .models import UserProfile
 from django.contrib.auth.decorators import login_required
+from Post_API.forms import PostForm
 
 
 def sign_up(request):
@@ -53,4 +54,12 @@ def log_out(request):
 
 @login_required
 def profile(request):
-    return render(request, 'Login_API/user.html', context = {'title' : 'Feetbook | Profile'})
+    form = PostForm()
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit = False)
+            post.author = request.user
+            post.save()
+            return HttpResponseRedirect(reverse('home'))
+    return render(request, 'Login_API/user.html', context = {'title' : 'Feetbook | Profile', 'form' : form})
