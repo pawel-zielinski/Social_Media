@@ -5,6 +5,7 @@ from django.urls import reverse, reverse_lazy
 from .models import UserProfile
 from django.contrib.auth.decorators import login_required
 from Post_API.forms import PostForm
+from django.contrib.auth.models import User
 
 
 def sign_up(request):
@@ -63,3 +64,10 @@ def profile(request):
             post.save()
             return HttpResponseRedirect(reverse('home'))
     return render(request, 'Login_API/user.html', context = {'title' : 'Feetbook | Profile', 'form' : form})
+
+@login_required
+def user(request, username):
+    user_other = User.objects.get(username = username)
+    if user == request.user:
+        return HttpResponseRedirect(reverse('Login_API:profile'))
+    return render(request, 'Login_API/user_other.html', context = {'title' : 'Feetbook | Users', 'user_other' : user_other})
