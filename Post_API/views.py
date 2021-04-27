@@ -9,4 +9,4 @@ def home(request):
     if request.method == 'GET':
         search = request.GET.get('search', '')
         result = User.objects.filter(username__icontains = search)
-    return render(request, 'Post_API/home.html', context = {'title' : 'Home Page', 'search' : search, 'result' : result})
+    return render(request, 'Post_API/home.html', context = {'title' : 'Feetbook | Home', 'search' : search, 'result' : result})

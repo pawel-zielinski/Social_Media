@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from .forms import CreateNewUser, FixedAuthenticationForm, EditProfileForm
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
-from .models import UserProfile
+from .models import UserProfile, Follow
 from django.contrib.auth.decorators import login_required
 from Post_API.forms import PostForm
 from django.contrib.auth.models import User
@@ -68,6 +68,25 @@ def profile(request):
 @login_required
 def user(request, username):
     user_other = User.objects.get(username = username)
+    already_following = Follow.objects.filter(follower=request.user, following = user_other)
     if user == request.user:
         return HttpResponseRedirect(reverse('Login_API:profile'))
-    return render(request, 'Login_API/user_other.html', context = {'title' : 'Feetbook | Users', 'user_other' : user_other})
+    return render(request, 'Login_API/user_other.html', context = {'title' : 'Feetbook | Users', 'user_other' : user_other, 'already_following' : already_following})
+
+@login_required
+def follow(request, username):
+    following_user = User.objects.get(username = username)
+    follower_user = request.user
+    already_following = Follow.objects.filter(follower=follower_user, following = following_user)
+    if not already_following:
+        followed_user = Follow(follower=follower_user, following = following_user)
+        followed_user.save()
+    return HttpResponseRedirect(reverse('Login_API:user', kwargs = {'username' : username}))
+
+@login_required
+def unfollow(request, username):
+    following_user = User.objects.get(username = username)
+    follower_user = request.user
+    already_following = Follow.objects.filter(follower=follower_user, following = following_user)
+    already_following.delete()
+    return HttpResponseRedirect(reverse('Login_API:user', kwargs = {'username' : username}))
