@@ -20,7 +20,47 @@
       </div><hr>
     {% endfor %}
   {% else %}
-
+    <div class="row">
+      <div class="col-sm-8">
+        {% for post in posts %}
+          <div style="border:1px solid #ddd;">
+            <div class="">
+              <p style="text-align:left;">
+              {% if post.author.user_profile.profile_pic %}
+                <img src="/media/{{ post.author.user_profile.profile_pic }}" width="50px" height="50px" class="rounded-circle">
+              {% else %}
+                <img src="/media/profile_pics/default.jpg" width="50px" height="50px" class="rounded-circle">
+              {% endif %}
+                <a href="{% url 'Login_API:user' username=post.author %}">{{ post.author }}</a>
+                <span style="float:right;"><br>
+                {{ post.upload_date }} &nbsp;&nbsp;&nbsp;
+                </span>
+              </p>
+            </div>
+            <br>
+            <img src="/media/{{ post.image }}" width="100%">
+            <div style="padding:20px;">
+              <h3>{{ post.caption }}</h3>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="col-sm-4">
+        <div class="row">
+          <div class="col-sm-4">
+            {% if user.user_profile.profile_pic %}
+              <img src="/media/{{ user.user_profile.profile_pic }}" width="75px" height="75px" class="rounded-circle">
+            {% else %}
+              <img src="/media/profile_pics/default.jpg" width="75px" height="75px" class="rounded-circle">
+            {% endif %}
+          </div>
+          <div class="col-sm-8">
+            <b>{{ user.username }}</b><br>
+            <b>{{ user.user_profile.full_name }}</b>
+          </div>
+        </div>
+      </div>
+    </div>
   {% endif %}
 
 {% endblock %}
